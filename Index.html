@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ClipGenius AI | AI Video Clipping</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #080b14;
+  color: white;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+header {
+  padding: 20px 6%;
+  border-bottom: 1px solid #252a3a;
+}
+
+.logo {
+  color: #9382ff;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.hero {
+  text-align: center;
+  padding: 65px 20px 35px;
+}
+
+.hero h1 {
+  font-size: clamp(35px, 7vw, 60px);
+  line-height: 1.2;
+}
+
+.hero h1 span {
+  color: #9382ff;
+}
+
+.hero p {
+  color: #aab0c3;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.box {
+  width: 92%;
+  max-width: 700px;
+  margin: 25px auto;
+  padding: 30px 22px;
+  background: #111727;
+  border: 1px solid #34305e;
+  border-radius: 18px;
+}
+
+h2 {
+  margin-bottom: 12px;
+}
+
+.description {
+  color: #aab0c3;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+input[type="url"],
+input[type="file"] {
+  width: 100%;
+  margin: 12px 0;
+}
+
+input[type="url"] {
+  padding: 15px;
+  background: #080b14;
+  color: white;
+  border: 1px solid #49416f;
+  border-radius: 9px;
+}
+
+input[type="file"] {
+  color: #aab0c3;
+}
+
+button {
+  background: #7867ef;
+  color: white;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 9px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 8px 0;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.divider {
+  text-align: center;
+  color: #858ba0;
+  margin: 25px 0;
+}
+
+#preview {
+  display: none;
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 12px;
+}
+
+#status {
+  margin-top: 18px;
+  color: #f0ca80;
+  overflow-wrap: anywhere;
+}
+
+#transcript {
+  display: none;
+  margin-top: 25px;
+  padding: 18px;
+  background: #080b14;
+  border-radius: 10px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.features {
+  padding: 50px 7%;
+}
+
+.features h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  background: #111727;
+  padding: 22px;
+  border-radius: 12px;
+  border: 1px solid #252a3a;
+}
+
+.card h3 {
+  color: #a99cff;
+  margin-bottom: 10px;
+}
+
+.card p {
+  color: #aab0c3;
+  font-size: 14px;
+}
+
+footer {
+  text-align: center;
+  padding: 30px;
+  color: #858ba0;
+  border-top: 1px solid #252a3a;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">✦ ClipGenius AI</div>
+</header>
+
+<section class="hero">
+  <h1>
+    Turn Long Videos Into<br>
+    <span>Viral Short Clips.</span>
+  </h1>
+
+  <p>
+    Your AI assistant for discovering interesting
+    moments in podcasts, gaming streams and videos.
+  </p>
+</section>
+
+<section class="box">
+
+  <h2>Start Creating</h2>
+
+  <p class="description">
+    Paste a YouTube link or upload media from your device.
+  </p>
+
+  <input
+    type="url"
+    id="youtubeUrl"
+    placeholder="Paste YouTube video link"
+  >
+
+  <button onclick="checkYoutube()">
+    Check YouTube Link
+  </button>
+
+  <div class="divider">OR</div>
+
+  <h3>Upload a Video</h3>
+
+  <input
+    type="file"
+    id="videoFile"
+    accept="video/*"
+  >
+
+  <video id="preview" controls playsinline></video>
+
+  <div class="divider">OR</div>
+
+  <h3>Upload Audio for AI Transcription</h3>
+
+  <p class="description">
+    Try an MP3, M4A, WAV or supported audio file.
+    For this first test, keep it under 3.5 MB.
+  </p>
+
+  <input
+    type="file"
+    id="audioFile"
+    accept="audio/*"
+  >
+
+  <button id="transcribeButton" onclick="transcribeAudio()">
+    ✨ Transcribe with AI
+  </button>
+
+  <div id="status">
+    Ready when you are.
+  </div>
+
+  <div id="transcript"></div>
+
+</section>
+
+<section class="features">
+
+  <h2>Powerful Creator Tools</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>✂️ Smart Clipping</h3>
+      <p>Find interesting moments in long recordings.</p>
+    </div>
+
+    <div class="card">
+      <h3>💬 AI Captions</h3>
+      <p>Generate synchronized subtitles.</p>
+    </div>
+
+    <div class="card">
+      <h3>🎮 Gaming Highlights</h3>
+      <p>Discover exciting moments from gaming streams.</p>
+    </div>
+
+    <div class="card">
+      <h3>📱 Vertical Videos</h3>
+      <p>Prepare content for Shorts, Reels and TikTok.</p>
+    </div>
+
+  </div>
+
+</section>
+
+<footer>
+  © 2026 ClipGenius AI. All rights reserved.
+</footer>
+
+<script>
+
+const statusBox = document.getElementById("status");
+const audioInput = document.getElementById("audioFile");
+const videoInput = document.getElementById("videoFile");
+const preview = document.getElementById("preview");
+const transcriptBox = document.getElementById("transcript");
+const transcribeButton = document.getElementById("transcribeButton");
+
+let videoURL = null;
+
+videoInput.addEventListener("change", function() {
+
+  const file = this.files[0];
+
+  if (!file) return;
+
+  if (videoURL) URL.revokeObjectURL(videoURL);
+
+  videoURL = URL.createObjectURL(file);
+
+  preview.src = videoURL;
+  preview.style.display = "block";
+
+  statusBox.textContent =
+    "Video selected. Video processing is not connected yet.";
+
+});
+
+function checkYoutube() {
+
+  const url = document.getElementById("youtubeUrl").value.trim();
+
+  try {
+
+    const parsed = new URL(url);
+
+    const hosts = [
+      "youtube.com",
+      "www.youtube.com",
+      "m.youtube.com",
+      "youtu.be",
+      "www.youtube-nocookie.com"
+    ];
+
+    if (!hosts.includes(parsed.hostname)) {
+      throw new Error();
+    }
+
+    statusBox.textContent =
+      "YouTube link accepted. Automatic video processing is still being developed.";
+
+  } catch {
+
+    statusBox.textContent =
+      "Please enter a valid YouTube link.";
+
+  }
+
+}
+
+function fileToBase64(file) {
+
+  return new Promise((resolve, reject) => {
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      resolve(reader.result.split(",")[1]);
+    };
+
+    reader.onerror = reject;
+
+    reader.readAsDataURL(file);
+
+  });
+
+}
+
+async function transcribeAudio() {
+
+  const file = audioInput.files[0];
+
+  if (!file) {
+    statusBox.textContent = "Please select an audio file.";
+    return;
+  }
+
+  if (!file.type.startsWith("audio/")) {
+    statusBox.textContent = "Please select a valid audio file.";
+    return;
+  }
+
+  if (file.size > 3.5 * 1024 * 1024) {
+    statusBox.textContent =
+      "File too large. Please select audio under 3.5 MB.";
+    return;
+  }
+
+  transcribeButton.disabled = true;
+  transcriptBox.style.display = "none";
+
+  statusBox.textContent = "Preparing your audio...";
+
+  try {
+
+    const audioBase64 = await fileToBase64(file);
+
+    statusBox.textContent = "AI is transcribing your audio...";
+
+    const response = await fetch(
+      "/.netlify/functions/transcribe",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          audioBase64: audioBase64,
+          fileName: file.name,
+          mimeType: file.type || "audio/mpeg"
+        })
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || "Transcription failed.");
+    }
+
+    transcriptBox.textContent = result.transcript || "No speech detected.";
+
+    transcriptBox.style.display = "block";
+
+    statusBox.textContent =
+      "✅ Transcription completed successfully!";
+
+  } catch (error) {
+
+    statusBox.textContent =
+      "Error: " + error.message;
+
+  } finally {
+
+    transcribeButton.disabled = false;
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
