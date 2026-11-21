@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ClipGenius AI - Smart Video Clipping</title>
+
+<meta name="description" content="Turn long videos into engaging short clips with ClipGenius AI.">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #080b14;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+header {
+  padding: 20px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #22283a;
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: bold;
+  color: #9382ff;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.hero {
+  text-align: center;
+  padding: 85px 20px 45px;
+}
+
+.badge {
+  display: inline-block;
+  color: #b7aaff;
+  background: #191532;
+  padding: 7px 16px;
+  border-radius: 30px;
+  margin-bottom: 22px;
+  font-size: 13px;
+}
+
+.hero h1 {
+  font-size: clamp(38px, 7vw, 65px);
+  line-height: 1.15;
+  margin-bottom: 22px;
+}
+
+.hero h1 span {
+  color: #9382ff;
+}
+
+.hero p {
+  color: #aab0c3;
+  max-width: 600px;
+  margin: auto;
+}
+
+.main-box {
+  width: 90%;
+  max-width: 720px;
+  margin: 35px auto;
+  padding: 35px 25px;
+  background: #111727;
+  border: 1px solid #34305e;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.main-box h2 {
+  margin-bottom: 10px;
+}
+
+.description {
+  color: #aab0c3;
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+.input {
+  width: 100%;
+  padding: 16px;
+  background: #080b14;
+  border: 1px solid #34305e;
+  border-radius: 10px;
+  color: white;
+  outline: none;
+  margin-bottom: 15px;
+}
+
+.button {
+  display: inline-block;
+  background: #7867ef;
+  color: white;
+  padding: 14px 22px;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.button:hover {
+  background: #6654dc;
+}
+
+.divider {
+  color: #858ba0;
+  margin: 25px 0;
+}
+
+.upload-label {
+  display: inline-block;
+  background: #252d42;
+  border: 1px solid #444e68;
+  padding: 14px 22px;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+#videoFile {
+  display: none;
+}
+
+#fileName {
+  color: #b7aaff;
+  margin-top: 15px;
+  overflow-wrap: anywhere;
+}
+
+#preview {
+  display: none;
+  width: 100%;
+  max-height: 350px;
+  margin-top: 20px;
+  border-radius: 12px;
+  background: black;
+}
+
+#status {
+  color: #f0ca80;
+  font-size: 14px;
+  margin-top: 20px;
+  overflow-wrap: anywhere;
+}
+
+.features {
+  padding: 65px 7%;
+}
+
+.features h2 {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 35px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #111727;
+  border: 1px solid #22283a;
+  border-radius: 15px;
+  padding: 25px;
+}
+
+.card h3 {
+  color: #a99cff;
+  margin-bottom: 12px;
+}
+
+.card p {
+  color: #aab0c3;
+  font-size: 14px;
+}
+
+.share {
+  text-align: center;
+  padding: 45px 20px;
+}
+
+.share p {
+  color: #aab0c3;
+  margin: 10px 0 20px;
+}
+
+footer {
+  text-align: center;
+  padding: 30px;
+  color: #858ba0;
+  border-top: 1px solid #22283a;
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">✦ ClipGenius AI</div>
+  <nav>
+    <a href="#features">Features</a>
+  </nav>
+</header>
+
+<section class="hero">
+
+  <div class="badge">✦ Your AI Video Assistant</div>
+
+  <h1>
+    Turn Long Videos Into<br>
+    <span>Viral Short Clips.</span>
+  </h1>
+
+  <p>
+    Transform gaming streams, podcasts, interviews and
+    long videos into engaging short-form content.
+    Spend less time editing and more time creating.
+  </p>
+
+</section>
+
+<section class="main-box">
+
+  <h2>Start Creating Your Clips</h2>
+
+  <p class="description">
+    Paste a YouTube link or upload a video from your device.
+  </p>
+
+  <input
+    class="input"
+    type="url"
+    id="youtubeUrl"
+    placeholder="Paste your YouTube video link here"
+  >
+
+  <button class="button" onclick="analyzeYoutube()">
+    Analyze YouTube Link →
+  </button>
+
+  <div class="divider">OR UPLOAD A VIDEO</div>
+
+  <label for="videoFile" class="upload-label">
+    📁 Choose Video From Device
+  </label>
+
+  <input
+    type="file"
+    id="videoFile"
+    accept="video/*"
+  >
+
+  <div id="fileName"></div>
+
+  <video id="preview" controls playsinline></video>
+
+  <div id="status">
+    Your next viral clip starts here.
+  </div>
+
+</section>
+
+<section class="features" id="features">
+
+  <h2>Everything You Need</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>✂️ Smart Clipping</h3>
+      <p>
+        Identify interesting moments and turn long videos
+        into shorter content.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>💬 Animated Captions</h3>
+      <p>
+        Create engaging subtitles synchronized with
+        spoken words.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>🎮 Gaming Highlights</h3>
+      <p>
+        Create clips from gaming streams, reactions
+        and exciting moments.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>📱 Vertical Reframing</h3>
+      <p>
+        Prepare videos for TikTok, Instagram Reels
+        and YouTube Shorts.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>🚀 AI Suggestions</h3>
+      <p>
+        Generate catchy titles, descriptions and
+        hashtags for your clips.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>⬇️ Easy Downloads</h3>
+      <p>
+        Download your finished clips and share
+        them with your audience.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+<section class="share">
+
+  <h2>Share ClipGenius AI</h2>
+
+  <p>
+    Invite creators to discover a smarter way to make clips.
+  </p>
+
+  <button class="button" onclick="shareWebsite()">
+    Share Website
+  </button>
+
+  <button class="button" onclick="copyWebsite()" style="margin-left:8px;">
+    Copy Website Link
+  </button>
+
+</section>
+
+<footer>
+  © 2026 ClipGenius AI. All rights reserved.
+</footer>
+
+<script>
+
+const videoInput = document.getElementById("videoFile");
+const preview = document.getElementById("preview");
+const fileName = document.getElementById("fileName");
+const statusBox = document.getElementById("status");
+
+let currentVideoURL = null;
+
+videoInput.addEventListener("change", function() {
+
+  const file = this.files[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith("video/")) {
+    statusBox.textContent = "Please select a valid video.";
+    return;
+  }
+
+  if (currentVideoURL) {
+    URL.revokeObjectURL(currentVideoURL);
+  }
+
+  currentVideoURL = URL.createObjectURL(file);
+
+  preview.src = currentVideoURL;
+  preview.style.display = "block";
+
+  fileName.textContent = "Selected: " + file.name;
+
+  statusBox.textContent =
+    "Video uploaded for preview. AI processing will be connected next.";
+
+});
+
+function analyzeYoutube() {
+
+  const url = document.getElementById("youtubeUrl").value.trim();
+
+  if (!url) {
+    statusBox.textContent = "Please paste a YouTube link first.";
+    return;
+  }
+
+  let parsed;
+
+  try {
+    parsed = new URL(url);
+  } catch {
+    statusBox.textContent = "Please enter a valid web address.";
+    return;
+  }
+
+  const validHosts = [
+    "youtube.com",
+    "www.youtube.com",
+    "m.youtube.com",
+    "youtu.be",
+    "www.youtube-nocookie.com"
+  ];
+
+  if (!validHosts.includes(parsed.hostname)) {
+    statusBox.textContent = "Please enter a valid YouTube video link.";
+    return;
+  }
+
+  statusBox.textContent =
+    "YouTube link received! The video-processing backend still needs to be connected.";
+
+}
+
+async function copyWebsite() {
+
+  const link = window.location.origin;
+
+  try {
+    await navigator.clipboard.writeText(link);
+    statusBox.textContent = "Website link copied successfully!";
+  } catch {
+    statusBox.textContent = "Your website link is: " + link;
+  }
+
+}
+
+async function shareWebsite() {
+
+  const link = window.location.origin;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "ClipGenius AI",
+        text: "Discover ClipGenius AI, your video clipping assistant.",
+        url: link
+      });
+    } catch (error) {
+      // Sharing cancelled by user.
+    }
+  } else {
+    copyWebsite();
+  }
+
+}
+
+</script>
+
+</body>
+</html>
