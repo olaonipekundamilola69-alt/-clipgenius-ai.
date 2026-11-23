@@ -1,0 +1,37 @@
+name: Deploy ClipGenius AI Backend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'modal/**'
+      - '.github/workflows/modal-deploy.yml'
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
+      MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+
+    steps:
+      - name: Get repository
+        uses: actions/checkout@v6
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Modal
+        run: |
+          python -m pip install --upgrade pip
+          pip install modal
+
+      - name: Deploy backend
+        run: |
+          modal deploy modal/clipgenius.py
