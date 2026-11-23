@@ -1,0 +1,41 @@
+name: Deploy ClipGenius AI Backend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'modal/**'
+      - '.github/workflows/modal-deploy.yml'
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
+      MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install modal requests fastapi python-multipart
+
+      - name: Check credentials
+        run: |
+          test -n "$MODAL_TOKEN_ID" || exit 1
+          test -n "$MODAL_TOKEN_SECRET" || exit 1
+
+      - name: Deploy ClipGenius
+        run: modal deploy modal/clipgenius.py
